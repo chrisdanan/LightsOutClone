@@ -1,0 +1,17 @@
+{
+  "name": "LightsOutClone",
+  "version": "1.0.0",
+  "description": "A clone of Lights Out, where the goal is to turn off all of the lit squares on the grid.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "game",
+    "lights",
+    "out"
+  ],
+  "author": "Christopher Dancarlo Danan",
+  "license": "ISC"
+}
