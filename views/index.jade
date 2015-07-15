@@ -4,7 +4,17 @@ block title
 	title #{title}
 
 block content
-	h1 Hello Vane!
-	p This is a test.
+	- var cellID = 0; //Used to give a unique id number to each cell.
+	- var cols = 10; //Number of columns.
+	- var rows = 10; //Number of rows.
+
+	- //Note: Row and Column numbers will start at 0.
+	table#gameBoard
+		- for(var i = 0; i < rows; i++){
+			tr
+			- for(var j = 0; j < cols; j++){
+				td(id="r#{i}c#{j}" class="gameSquare #{cellID}")
+			- }
+		- }
 
 	
