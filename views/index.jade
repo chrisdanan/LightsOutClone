@@ -13,7 +13,8 @@ block content
 		- for(var i = 0; i < rows; i++){
 			tr
 			- for(var j = 0; j < cols; j++){
-				td(id="r#{i}c#{j}" class="gameSquare #{cellID}")
+				td(id="#{cellID}" class="gameSquare")
+				- cellID++;
 			- }
 		- }
 
