@@ -1,9 +1,20 @@
+//************* PROJECT INFORMATION *************
+
 /*************
  * Author: Christopher Dancarlo Danan
  * Created: July 14, 2015
  * Modified: July 16, 2015
  * Purpose: Game logic for Lights Out clone project.
 *************/
+
+//************* GLOBAL VARIABLES *************
+
+var levelOne = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
+	levelTwo = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //8 moves to solve.
+	levelThree = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
+	currentLevel = 1;
+
+//************* FUNCTIONS *************
 
 /*************
  * Purpose: Toggle the cell passed into the function "on" or "off".
@@ -31,10 +42,21 @@ var win = function(){
 	}
 };
 
+var loadLevel = function(level){
+	level.forEach(function(cellID){
+		toggle(cellID);
+	});
+};
+
+//************* MAIN *************
+
 var main = function(){
 	"use strict";
 
 	console.log("HEY VANE!!!");
+
+	loadLevel(levelOne);  //Start on level 1.
+	$("#levelIndicator").text("Level 1");
 
 	//Player clicked a cell on the game board.
 	$("#gameBoard td").on("click", function(cell){
@@ -78,6 +100,25 @@ var main = function(){
 
 		if(win()){
 			console.log("You won!");
+			currentLevel++;
+
+			//Load next level based on current level.
+			switch(currentLevel){
+				case 2:
+					loadLevel(levelTwo);
+					$("#levelIndicator").empty();
+					$("#levelIndicator").text("Level 2");
+					break;
+				case 3:
+					$("#levelIndicator").empty();
+					$("#levelIndicator").text("Level 3");
+					loadLevel(levelThree);
+					break;
+				default:
+					$("#levelIndicator").empty();
+					$("#levelIndicator").text("Level 1");
+					loadLevel(levelOne);
+			}
 		}
 	});
 };
