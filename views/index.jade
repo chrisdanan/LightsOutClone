@@ -8,15 +8,17 @@ block content
 	- var cols = 10; //Number of columns.
 	- var rows = 10; //Number of rows.
 
-	- //Note: Row and Column numbers will start at 0.
-	table#gameBoard
-		- for(var i = 0; i < rows; i++){
-			tr
-			- for(var j = 0; j < cols; j++){
-				td(id="#{cellID}" class="gameSquare off") #{cellID}
-				- cellID++;
+	h1 Light's Out Clone
+	div#gameArea
+		- //Note: Row and Column numbers will start at 0.
+		table#gameBoard
+			- for(var i = 0; i < rows; i++){
+				tr
+				- for(var j = 0; j < cols; j++){
+					td(id="#{cellID}" class="gameSquare off") #{cellID}
+					- cellID++;
+				- }
 			- }
-		- }
 
 block moreScripts
 	- //Reference: http://stackoverflow.com/questions/10919650/accessing-express-js-local-variables-in-client-side-javascript
