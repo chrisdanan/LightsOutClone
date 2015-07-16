@@ -4,3 +4,11 @@ td{
 	border: 1px solid black;
 	background-color: cornflowerblue;
 }
+
+td.on{
+	background-color: yellow;
+}
+
+td.off{
+	background-color: cornflowerblue;
+}
