@@ -36,15 +36,30 @@ var main = function(){
 		//Toggle the clicked cell on/off.
 		toggle(clickedID);
 
-		//Toggle the surrounding cells on/off.
-		toggle(leftID);
-		toggle(rightID);
+		//Toggle the surrounding cells on/off:
+		//Left side
+		//The if-statement prevents wrapped cells from being activated.
+		if(leftID % local_data_cols !== (local_data_cols - 1) &&
+			topLeftID % local_data_cols !== (local_data_cols - 1) &&
+			bottomLeftID % local_data_cols !== (local_data_cols - 1)){
+			toggle(leftID);
+			toggle(topLeftID);
+			toggle(bottomLeftID);
+		}
+
+		//Middle
 		toggle(topID);
 		toggle(bottomID);
-		toggle(topLeftID);
-		toggle(topRightID);
-		toggle(bottomLeftID);
-		toggle(bottomRightID);
+
+		//Right side
+		//The if-statement prevents wrapped cells from being activated.
+		if(rightID % local_data_cols !== 0 &&
+			topRightID % local_data_cols !== 0 &&
+			bottomRightID % local_data_cols !== 0){
+			toggle(rightID);
+			toggle(topRightID);
+			toggle(bottomRightID);
+		}
 	});
 };
 
