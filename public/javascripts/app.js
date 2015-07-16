@@ -1,7 +1,7 @@
 /*************
  * Author: Christopher Dancarlo Danan
  * Created: July 14, 2015
- * Modified: July 14, 2015
+ * Modified: July 16, 2015
  * Purpose: Game logic for Lights Out clone project.
 *************/
 
@@ -14,6 +14,21 @@
 var toggle = function(id){
 	$("#" + id).toggleClass("off");
 	$("#" + id).toggleClass("on");
+};
+
+/*************
+ * Purpose: Check if the board is in a win state.
+ * Input: None.
+ * Output: Return true if the player won, else return false.
+*************/
+var win = function(){
+	var cellsOn = $(".on");  //Array to hold all cells with class "on"; if array is empty, then all cells are off (i.e. player won the game).
+
+	if(cellsOn.length === 0){
+		return true;
+	} else{
+		return false;
+	}
 };
 
 var main = function(){
@@ -59,6 +74,10 @@ var main = function(){
 			toggle(rightID);
 			toggle(topRightID);
 			toggle(bottomRightID);
+		}
+
+		if(win()){
+			console.log("You won!");
 		}
 	});
 };
