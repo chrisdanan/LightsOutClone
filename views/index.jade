@@ -13,9 +13,17 @@ block content
 		- for(var i = 0; i < rows; i++){
 			tr
 			- for(var j = 0; j < cols; j++){
-				td(id="#{cellID}" class="gameSquare")
+				td(id="#{cellID}" class="gameSquare off") #{cellID}
 				- cellID++;
 			- }
 		- }
 
-	
+block moreScripts
+	- //Reference: http://stackoverflow.com/questions/10919650/accessing-express-js-local-variables-in-client-side-javascript
+	- /* This is an interesting solution I found online to a problem I ran into. I wanted to pass in the number of columns defined here in the jade file to my client-side
+			JavaScript, but I didn't know how to do it. Like the poster in the reference above, I initially thought to hide the information in a hidden HTML element, but I
+			wanted to try to do it in a cleaner way. According to searches online, many people suggest that I save the variable in "rendered JavaScript". It works!
+			This will be used to help determine the cells above and below the clicked cell during the game.
+	- */
+	script(type='text/javascript').
+		var local_data_cols = !{JSON.stringify(cols)}
