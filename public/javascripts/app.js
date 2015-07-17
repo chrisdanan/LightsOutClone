@@ -3,16 +3,17 @@
 /*************
  * Author: Christopher Dancarlo Danan
  * Created: July 14, 2015
- * Modified: July 16, 2015
+ * Modified: July 17, 2015
  * Purpose: Game logic for Lights Out clone project.
 *************/
 
 //************* GLOBAL VARIABLES *************
 
 var levelOne = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
-	levelTwo = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
-	levelThree = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
-	currentLevel = 1;
+	levelTwo = [31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58],  //10  moves to solve.
+	levelThree = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
+	levelFour = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
+	currentLevel = 1;  //Default start at level 1.
 
 //************* FUNCTIONS *************
 
@@ -55,23 +56,44 @@ var loadLevel = function(level){
 };
 
 /*************
+ * Purpose: Restart the current level. First, it turns off all cells. Then, it calls chooseLevel() to reload the current level.
+ * Input: None.
+ * Output: Calls chooseLevel() to reload the current level.
+*************/
+var restart = function(level){
+	//Turn off all cells.
+	for(var i = 0; i < local_data_numCells; i++){
+		if($("#" + i).hasClass("on")){
+			toggle(i);
+		}
+	}
+
+	//Reload current level.
+	chooseLevel();
+};
+
+/*************
  * Purpose: Choose which level to load based on current level number.
- * Input: None
+ * Input: None.
  * Output: The next level is chosen and loaded.
 *************/
 var chooseLevel = function(){
 	//Load next level based on current level.
 	switch(currentLevel){
 		case 2:
-			loadLevel(levelTwo);
 			$("#levelIndicator").empty();
 			$("#levelIndicator").text("Level 2");
+			loadLevel(levelTwo);
 			break;
 		case 3:
 			$("#levelIndicator").empty();
 			$("#levelIndicator").text("Level 3");
 			loadLevel(levelThree);
 			break;
+		case 4:
+			$("#levelIndicator").empty();
+			$("#levelIndicator").text("Level 4");
+			loadLevel(levelFour);
 		default:
 			$("#levelIndicator").empty();
 			$("#levelIndicator").text("Level 1");
@@ -143,6 +165,7 @@ var main = function(){
 		console.log("Restarting level " + currentLevel);
 		//Can't simply use chooseLevel() function since it flips the cells' current status.
 		//This means that cells won't go back to the original level configuration, so I must use a different technique or modify that function.
+		restart();
 	});
 };
 

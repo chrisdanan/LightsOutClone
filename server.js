@@ -1,7 +1,7 @@
 /*************
  * Author: Christopher Dancarlo Danan
  * Created: July 14, 2015
- * Modified: July 14, 2015
+ * Modified: July 16, 2015
  * Purpose: Server for Lights Out clone project.
 *************/
 
