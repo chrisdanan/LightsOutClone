@@ -10,7 +10,7 @@
 //************* GLOBAL VARIABLES *************
 
 var levelOne = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
-	levelTwo = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //8 moves to solve.
+	levelTwo = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
 	levelThree = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
 	currentLevel = 1;
 
@@ -42,10 +42,42 @@ var win = function(){
 	}
 };
 
+/*************
+ * Purpose: Configure the game board based on the level.
+ * Input:
+ 			-level: the level to be loaded, stored as an array with cellIDs that are to be turned on.
+ * Output: The game board is configured.
+*************/
 var loadLevel = function(level){
 	level.forEach(function(cellID){
 		toggle(cellID);
 	});
+};
+
+/*************
+ * Purpose: Choose which level to load based on current level number.
+ * Input: None
+ * Output: The next level is chosen and loaded.
+*************/
+var chooseLevel = function(){
+	//Load next level based on current level.
+	switch(currentLevel){
+		case 2:
+			loadLevel(levelTwo);
+			$("#levelIndicator").empty();
+			$("#levelIndicator").text("Level 2");
+			break;
+		case 3:
+			$("#levelIndicator").empty();
+			$("#levelIndicator").text("Level 3");
+			loadLevel(levelThree);
+			break;
+		default:
+			$("#levelIndicator").empty();
+			$("#levelIndicator").text("Level 1");
+			loadLevel(levelOne);
+			currentLevel = 1;
+	}
 };
 
 //************* MAIN *************
@@ -101,25 +133,16 @@ var main = function(){
 		if(win()){
 			console.log("You won!");
 			currentLevel++;
-
-			//Load next level based on current level.
-			switch(currentLevel){
-				case 2:
-					loadLevel(levelTwo);
-					$("#levelIndicator").empty();
-					$("#levelIndicator").text("Level 2");
-					break;
-				case 3:
-					$("#levelIndicator").empty();
-					$("#levelIndicator").text("Level 3");
-					loadLevel(levelThree);
-					break;
-				default:
-					$("#levelIndicator").empty();
-					$("#levelIndicator").text("Level 1");
-					loadLevel(levelOne);
-			}
+			chooseLevel();
 		}
+	});
+	
+	//Player clicked Restart Button.
+	$("#restartButton").on("click", function(){
+		console.log("Restart button clicked.");
+		console.log("Restarting level " + currentLevel);
+		//Can't simply use chooseLevel() function since it flips the cells' current status.
+		//This means that cells won't go back to the original level configuration, so I must use a different technique or modify that function.
 	});
 };
 
