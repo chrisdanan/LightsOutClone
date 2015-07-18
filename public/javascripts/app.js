@@ -9,10 +9,11 @@
 
 //************* GLOBAL VARIABLES *************
 
-var levelOne = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
-	levelTwo = [31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58],  //10  moves to solve.
-	levelThree = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
-	levelFour = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
+var levelOne = [33, 34, 35, 43, 44, 45, 53, 54, 55],  //1 move to solve.
+	levelTwo = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
+	levelThree = [31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58],  //10  moves to solve.
+	levelFour = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
+	levelFive = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
 	currentLevel = 1;  //Default start at level 1.
 
 //************* FUNCTIONS *************
@@ -94,6 +95,12 @@ var chooseLevel = function(){
 			$("#levelIndicator").empty();
 			$("#levelIndicator").text("Level 4");
 			loadLevel(levelFour);
+			break;
+		case 5:
+			$("#levelIndicator").empty();
+			$("#levelIndicator").text("Level 5");
+			loadLevel(levelFive);
+			break;
 		default:
 			$("#levelIndicator").empty();
 			$("#levelIndicator").text("Level 1");
