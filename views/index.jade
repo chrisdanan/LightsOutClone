@@ -8,36 +8,43 @@ block content
 	- var cols = 10; //Number of columns.
 	- var rows = 10; //Number of rows.
 
-	h1 Lights Out Clone
-	div#gameArea
-		- //Note: Row and Column numbers will start at 0.
-		table#gameBoard
-			- for(var i = 0; i < rows; i++){
-				tr
-				- for(var j = 0; j < cols; j++){
-					td(id="#{cellID}" class="gameSquare off") #{cellID}
-					- cellID++;
-				- }
-			- }
-	div#infoBoard
-		p#levelIndicator
-	div#controls
-		button#restartButton Restart Level
-	div#instructions
-		h2.instructionItem Instructions
-		p.instructionItem.
-			The goal of the game is to turn off all of the light's on the game board. You can turn a light off or on by clicking one of the cells on the board.
-			Clicking a cell also triggers adjacent cells to the one that is clicked. That is, clicking a cell also triggers the top, bottom, left, right, and diagonal
-			cells. Therefore, a total of nine cells are triggered with one click.
+	div#gameArea.container
+		div#header.row
+			div.col-md-6
+				h1 Lights Out Clone
+			div.col-md-6
+				h2 by #[a.authorInformation.link(href="https://github.com/chrisdanan") Christopher Dancarlo Danan]
+		div.row
+			div.col-md-6
+				div#infoBoard.container
+					h3#levelIndicator
+				- //Note: Row and Column numbers will start at 0.
+				table#gameBoard
+					- for(var i = 0; i < rows; i++){
+						tr
+						- for(var j = 0; j < cols; j++){
+							td(id="#{cellID}" class="gameSquare off")
+							- cellID++;
+						- }
+					- }
+				div#controls.container
+					button#restartButton Restart Level
+			div.col-md-6
+				div#instructions.container
+					h3.instructionItem Instructions
+					p.instructionItem.
+						The goal of the game is to turn off all of the light's on the game board. You can turn a light off or on by clicking one of the cells on the board.
+						Clicking a cell also triggers adjacent cells to the one that is clicked. That is, clicking a cell also triggers the top, bottom, left, right, and diagonal
+						cells. Therefore, a total of nine cells are triggered with one click.
 
-		p.instructionItem.
-			This game is a clone of the original Lights Out. I wanted to do this project because
-		ul.instructionItem
-			li I love games
-			li I love coding
-			li I wanted to practice my skills and try my hand at new projects.
-		p.instructionItem.
-			Here is a link to a Wikipedia page on the original Lights Out: #[a(href="https://en.wikipedia.org/wiki/Lights_Out_(game)") Lights Out Wikipedia Page]
+					p.instructionItem.
+						This game is a clone of the original Lights Out. I wanted to do this project because
+					ol.instructionItem
+						li I love games
+						li I love coding
+						li I wanted to practice my skills and try my hand at new projects.
+					p.instructionItem.
+						Here is a link to a Wikipedia page on the original Lights Out: #[a.link(href="https://en.wikipedia.org/wiki/Lights_Out_(game)") Lights Out Wikipedia Page]
 block moreScripts
 	- //Reference: http://stackoverflow.com/questions/10919650/accessing-express-js-local-variables-in-client-side-javascript
 	- /* This is an interesting solution I found online to a problem I ran into. I wanted to pass in the number of columns defined here in the jade file to my client-side
