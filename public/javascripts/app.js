@@ -21,6 +21,9 @@ var levelOne = [33, 34, 35, 43, 44, 45, 53, 54, 55],  //1 move to solve.
 var clickBeep = new Audio("assets/sounds/Beep_Click_Cell.m4a");  //Used whenever player clicks a cell.
 var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter egg.
 
+//Most recent move made by the player.
+var lastClicked;
+
 //************* FUNCTIONS *************
 
 /*************
@@ -32,6 +35,51 @@ var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter 
 var toggle = function(id){
 	$("#" + id).toggleClass("off");
 	$("#" + id).toggleClass("on");
+};
+
+/*************
+ * Purpose: Calculate the cells that are affected by a click and toggle them.
+ * Input: 
+ 			-clickedID: the id of the cell that is clicked.
+ * Output: The clicked cell and the surrounding cells are toggled on/off.
+*************/
+var toggleCells = function(clickedID){
+	var leftID = clickedID - 1,
+		rightID = clickedID + 1,
+		topID = clickedID - local_data_cols,
+		bottomID = clickedID + local_data_cols,
+		topLeftID = topID - 1,
+		topRightID = topID + 1,
+		bottomLeftID = bottomID - 1,
+		bottomRightID = bottomID + 1;
+
+	//Toggle the clicked cell on/off.
+	toggle(clickedID);
+
+	//Toggle the surrounding cells on/off:
+	//Left side
+	//The if-statement prevents wrapped cells from being activated.
+	if(leftID % local_data_cols !== (local_data_cols - 1) &&
+		topLeftID % local_data_cols !== (local_data_cols - 1) &&
+		bottomLeftID % local_data_cols !== (local_data_cols - 1)){
+		toggle(leftID);
+		toggle(topLeftID);
+		toggle(bottomLeftID);
+	}
+
+	//Middle
+	toggle(topID);
+	toggle(bottomID);
+
+	//Right side
+	//The if-statement prevents wrapped cells from being activated.
+	if(rightID % local_data_cols !== 0 &&
+		topRightID % local_data_cols !== 0 &&
+		bottomRightID % local_data_cols !== 0){
+		toggle(rightID);
+		toggle(topRightID);
+		toggle(bottomRightID);
+	}
 };
 
 /*************
@@ -128,42 +176,9 @@ var main = function(){
 	$("#gameBoard td").on("click", function(cell){
 		clickBeep.play();
 		var clickedID = parseInt($(cell.target).attr("id"));  //Save id of clicked cell; used later to toggle other cells as on/off.
-		var leftID = clickedID - 1,
-			rightID = clickedID + 1,
-			topID = clickedID - local_data_cols,
-			bottomID = clickedID + local_data_cols,
-			topLeftID = topID - 1,
-			topRightID = topID + 1,
-			bottomLeftID = bottomID - 1,
-			bottomRightID = bottomID + 1;
-
-		//Toggle the clicked cell on/off.
-		toggle(clickedID);
-
-		//Toggle the surrounding cells on/off:
-		//Left side
-		//The if-statement prevents wrapped cells from being activated.
-		if(leftID % local_data_cols !== (local_data_cols - 1) &&
-			topLeftID % local_data_cols !== (local_data_cols - 1) &&
-			bottomLeftID % local_data_cols !== (local_data_cols - 1)){
-			toggle(leftID);
-			toggle(topLeftID);
-			toggle(bottomLeftID);
-		}
-
-		//Middle
-		toggle(topID);
-		toggle(bottomID);
-
-		//Right side
-		//The if-statement prevents wrapped cells from being activated.
-		if(rightID % local_data_cols !== 0 &&
-			topRightID % local_data_cols !== 0 &&
-			bottomRightID % local_data_cols !== 0){
-			toggle(rightID);
-			toggle(topRightID);
-			toggle(bottomRightID);
-		}
+		lastClicked = clickedID;
+		
+		toggleCells(clickedID);
 
 		if(win()){
 			console.log("You won!");
@@ -181,6 +196,12 @@ var main = function(){
 		restart();
 	});
 
+	$("#undoButton").on("click", function(){
+		console.log("Clicked Undo button");
+		toggleCells(lastClicked);
+	});
+
+	//Easter egg!!!
 	$("#shh").on("click", function(){
 		secret.play();
 	});

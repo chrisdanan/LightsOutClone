@@ -34,7 +34,7 @@ td:hover{
 	cursor: pointer;
 }
 
-#restartButton{
+button{
 	margin: 3px;
 	border: 5px solid black;
 	background-color: cornflowerblue;
