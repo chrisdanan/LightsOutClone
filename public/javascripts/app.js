@@ -9,12 +9,17 @@
 
 //************* GLOBAL VARIABLES *************
 
+//Levels.
 var levelOne = [33, 34, 35, 43, 44, 45, 53, 54, 55],  //1 move to solve.
 	levelTwo = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
 	levelThree = [31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58],  //10  moves to solve.
 	levelFour = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
 	levelFive = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
 	currentLevel = 1;  //Default start at level 1.
+
+//Sounds.
+var clickBeep = new Audio("assets/sounds/Beep_Click_Cell.m4a");  //Used whenever player clicks a cell.
+var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter egg.
 
 //************* FUNCTIONS *************
 
@@ -121,6 +126,7 @@ var main = function(){
 
 	//Player clicked a cell on the game board.
 	$("#gameBoard td").on("click", function(cell){
+		clickBeep.play();
 		var clickedID = parseInt($(cell.target).attr("id"));  //Save id of clicked cell; used later to toggle other cells as on/off.
 		var leftID = clickedID - 1,
 			rightID = clickedID + 1,
@@ -173,6 +179,10 @@ var main = function(){
 		//Can't simply use chooseLevel() function since it flips the cells' current status.
 		//This means that cells won't go back to the original level configuration, so I must use a different technique or modify that function.
 		restart();
+	});
+
+	$("#shh").on("click", function(){
+		secret.play();
 	});
 };
 
