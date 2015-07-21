@@ -14,17 +14,34 @@ var levelOne = [33, 34, 35, 43, 44, 45, 53, 54, 55],  //1 move to solve.
 	levelTwo = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
 	levelThree = [31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58],  //10  moves to solve.
 	levelFour = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
-	levelFive = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
 	currentLevel = 1;  //Default start at level 1.
 
 //Sounds.
-var clickBeep = new Audio("assets/sounds/Beep_Click_Cell.m4a");  //Used whenever player clicks a cell.
+//var clickBeep = new Audio("assets/sounds/Beep_Click_Cell.m4a");  //Used whenever player clicks a cell.
 var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter egg.
 
 //Most recent move made by the player.
 var lastClicked;
 
 //************* FUNCTIONS *************
+
+//References: 	http://stackoverflow.com/questions/6893080/html5-audio-play-sound-repeatedly-on-click-regardless-if-previous-iteration-h
+//				https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Older_way_to_register_event_listeners
+/*************
+ * Purpose: Plays a beeping sound whenever a cell is clicked.
+ 			The function allows the sound to play while a previous iteration of the sound is still playing.
+ 			New audio elements are created and removed when the sound finishes (akin to Unity).
+ * Input: None.
+ * Output: Beeping sound is made.
+*************/
+var clickBeep = function(){
+	var audio = document.createElement("audio");
+	audio.src = "assets/sounds/Beep_Click_Cell.m4a";
+	audio.addEventListener("ended", function(){
+		document.removeChild(this);
+	}, false);
+	audio.play();
+};
 
 /*************
  * Purpose: Toggle the cell passed into the function "on" or "off".
@@ -174,7 +191,7 @@ var main = function(){
 
 	//Player clicked a cell on the game board.
 	$("#gameBoard td").on("click", function(cell){
-		clickBeep.play();
+		clickBeep();
 		var clickedID = parseInt($(cell.target).attr("id"));  //Save id of clicked cell; used later to toggle other cells as on/off.
 		lastClicked = clickedID;
 		
