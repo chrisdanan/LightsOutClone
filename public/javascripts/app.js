@@ -23,6 +23,9 @@ var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter 
 //Most recent move made by the player.
 var lastClicked;
 
+//Boolean to determine if sounds are muted or not.
+var mute = false;
+
 //************* FUNCTIONS *************
 
 //References: 	http://stackoverflow.com/questions/6893080/html5-audio-play-sound-repeatedly-on-click-regardless-if-previous-iteration-h
@@ -191,7 +194,9 @@ var main = function(){
 
 	//Player clicked a cell on the game board.
 	$("#gameBoard td").on("click", function(cell){
-		clickBeep();
+		if(mute === false){
+			clickBeep();
+		}
 		var clickedID = parseInt($(cell.target).attr("id"));  //Save id of clicked cell; used later to toggle other cells as on/off.
 		lastClicked = clickedID;
 		
@@ -213,9 +218,17 @@ var main = function(){
 		restart();
 	});
 
+	//Player clicked Undo Button.
 	$("#undoButton").on("click", function(){
 		console.log("Clicked Undo button");
 		toggleCells(lastClicked);
+	});
+
+	//Player clicked Mute Button.
+	$("#muteButton").on("click", function(){
+		console.log("Clicked Mute button");
+		mute = !mute;
+		console.log(mute);
 	});
 
 	//Easter egg!!!
