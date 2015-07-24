@@ -14,6 +14,7 @@ var levelOne = [33, 34, 35, 43, 44, 45, 53, 54, 55],  //1 move to solve.
 	levelTwo = [0, 1, 10, 11, 8, 9, 18, 19, 88, 89, 98, 99, 80, 81, 90, 91],  //4 moves to solve.
 	levelThree = [31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 51, 52, 53, 54, 55, 56, 57, 58],  //10  moves to solve.
 	levelFour = [0, 1, 2, 7, 8, 9, 10, 13, 16, 19, 20, 23, 26, 29, 31, 32, 33, 36, 37, 38, 43, 46, 53, 56, 63, 66, 70, 71, 72, 77, 78, 79, 82, 87, 92, 97],  //10 moves to solve.
+	levelFive = [11, 12, 17, 18, 30, 32, 37, 39, 40, 42, 47, 49, 50, 52, 57, 59, 70, 71, 72, 77, 78, 79, 82, 83, 86, 87, 92, 93, 96, 97],  //16 moves to solve.
 	currentLevel = 1;  //Default start at level 1.
 
 //Sounds.
@@ -34,6 +35,7 @@ var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter 
 var buttonClick = new Audio("assets/sounds/buttonClick.wav");
 buttonClick.volume = 0.8;
 
+var winSound = new Audio("assets/sounds/reward.mp3");  //downloaded from flashkit.com - created by Mark E. Buckland.
 
 //Most recent move made by the player.
 var lastClicked;
@@ -130,17 +132,35 @@ var loadLevel = function(level){
 };
 
 /*************
+ * Purpose: Turn all cells on the board on or off.
+ * Input:
+ 			-off: Boolean - if true, turn off all cells; if false, turn on all cells.
+ * Output: All cells are turned on or off.
+*************/
+var turnCellsOff = function(off){
+	if(off){
+		for(var i = 0; i < local_data_numCells; i++){
+			if($("#" + i).hasClass("on")){
+				toggle(i);
+			}
+		}
+	}else{
+		for(var i = 0; i < local_data_numCells; i++){
+			if($("#" + i).hasClass("off")){
+				toggle(i);
+			}
+		}
+	}
+};
+
+/*************
  * Purpose: Restart the current level. First, it turns off all cells. Then, it calls chooseLevel() to reload the current level.
  * Input: None.
  * Output: Calls chooseLevel() to reload the current level.
 *************/
 var restart = function(level){
 	//Turn off all cells.
-	for(var i = 0; i < local_data_numCells; i++){
-		if($("#" + i).hasClass("on")){
-			toggle(i);
-		}
-	}
+	turnCellsOff(true);
 
 	//Reload current level.
 	chooseLevel();
@@ -209,8 +229,30 @@ var main = function(){
 
 		if(win()){
 			console.log("You won!");
-			currentLevel++;
-			chooseLevel();
+
+			if(mute === false){
+				winSound.play();  //Play a sound to indicate the level was completed.
+			}
+			
+			//The following will flash the board yellow and blue in order to indicate that the level was completed.
+			var counter = 0;  //Counts how many times the board flashes and will be used to turn off setInterval.
+			var winInterval = setInterval(function(){
+				if(counter % 2 === 0){
+					turnCellsOff(false);
+					counter++;
+				}else{
+					turnCellsOff(true);
+					counter++;
+				}
+
+				//Reference for stopping setInterval: http://stackoverflow.com/questions/9136261/how-to-make-a-setinterval-stop-after-some-time-or-after-a-number-of-actions
+				if(counter === 6){
+					clearInterval(winInterval);
+					//Load the next level.
+					currentLevel++
+					chooseLevel();
+				}
+			}, 200);
 		}
 	});
 	
