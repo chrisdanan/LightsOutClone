@@ -3,7 +3,7 @@
 /*************
  * Author: Christopher Dancarlo Danan
  * Created: July 14, 2015
- * Modified: July 17, 2015
+ * Modified: July 24, 2015
  * Purpose: Game logic for Lights Out clone project.
 *************/
 
@@ -17,8 +17,22 @@ var levelOne = [33, 34, 35, 43, 44, 45, 53, 54, 55],  //1 move to solve.
 	currentLevel = 1;  //Default start at level 1.
 
 //Sounds.
-//var clickBeep = new Audio("assets/sounds/Beep_Click_Cell.m4a");  //Used whenever player clicks a cell.
+//One way to play the same sound simultaneously is to create duplicates of the sound, stick them into an array, and play them round-robin style.
+// I would've prefered something more simple, but so far my research on the Internet provides no better results, as the previous method resulted in
+// numerous warnings popping out in the developer's console.
+//I did read about something called the Web Audio API, but it seems that it is not widely implemented in all browsers as of now.
+var clickBeep1 = new Audio("assets/sounds/Beep_Click_Cell.m4a"),  //Used whenever player clicks a cell.
+	clickBeep2 = new Audio("assets/sounds/Beep_Click_Cell.m4a"),  //Have multiple instances of the same sound in order to have it play while a previous iteration is still playing.
+	clickBeep3 = new Audio("assets/sounds/Beep_Click_Cell.m4a"),
+	clickBeep4 = new Audio("assets/sounds/Beep_Click_Cell.m4a"),
+	clickBeep5 = new Audio("assets/sounds/Beep_Click_Cell.m4a");  
+var clickBeepID = 0;  //Keeps track of which clickBeep is currently playing in array.
+var clickBeepArr = [clickBeep1, clickBeep2, clickBeep3, clickBeep4, clickBeep5];  //Play sounds round-robin style to simulate 
+
 var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter egg.
+var buttonClick = new Audio("assets/sounds/buttonClick.wav");
+buttonClick.volume = 0.8;
+
 
 //Most recent move made by the player.
 var lastClicked;
@@ -30,21 +44,6 @@ var mute = false;
 
 //References: 	http://stackoverflow.com/questions/6893080/html5-audio-play-sound-repeatedly-on-click-regardless-if-previous-iteration-h
 //				https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Older_way_to_register_event_listeners
-/*************
- * Purpose: Plays a beeping sound whenever a cell is clicked.
- 			The function allows the sound to play while a previous iteration of the sound is still playing.
- 			New audio elements are created and removed when the sound finishes (akin to Unity).
- * Input: None.
- * Output: Beeping sound is made.
-*************/
-var clickBeep = function(){
-	var audio = document.createElement("audio");
-	audio.src = "assets/sounds/Beep_Click_Cell.m4a";
-	audio.addEventListener("ended", function(){
-		document.removeChild(this);
-	}, false);
-	audio.play();
-};
 
 /*************
  * Purpose: Toggle the cell passed into the function "on" or "off".
@@ -195,8 +194,13 @@ var main = function(){
 	//Player clicked a cell on the game board.
 	$("#gameBoard td").on("click", function(cell){
 		if(mute === false){
-			clickBeep();
+			clickBeepArr[clickBeepID++].play();
+			//Reset clickBeepID to 0 if it reaches end of array.
+			if(clickBeepID >= clickBeepArr.length){
+				clickBeepID = 0;
+			}
 		}
+
 		var clickedID = parseInt($(cell.target).attr("id"));  //Save id of clicked cell; used later to toggle other cells as on/off.
 		lastClicked = clickedID;
 		
@@ -213,22 +217,43 @@ var main = function(){
 	$("#restartButton").on("click", function(){
 		console.log("Restart button clicked.");
 		console.log("Restarting level " + currentLevel);
-		//Can't simply use chooseLevel() function since it flips the cells' current status.
-		//This means that cells won't go back to the original level configuration, so I must use a different technique or modify that function.
+
+		if(mute === false){
+			//One way the Internet suggests playing overlapping identical sounds is to set currentTime to 0
+			// evertime the sound needs to be played. While this doesn't actually play the sound simultaneously,
+			// it works for short sounds such as this buttonClick here.
+			buttonClick.currentTime = 0;
+			buttonClick.play();
+		}
+	
 		restart();
 	});
 
 	//Player clicked Undo Button.
 	$("#undoButton").on("click", function(){
 		console.log("Clicked Undo button");
+
+		if(mute === false){
+			buttonClick.currentTime = 0;
+			buttonClick.play();
+		}
+
 		toggleCells(lastClicked);
 	});
 
 	//Player clicked Mute Button.
 	$("#muteButton").on("click", function(){
 		console.log("Clicked Mute button");
+
 		mute = !mute;
-		console.log(mute);
+
+		if(mute === true){
+			$("#muteButton").text("Unmute");
+			buttonClick.currentTime = 0;
+			buttonClick.play();
+		} else{
+			$("#muteButton").text("Mute");
+		}
 	});
 
 	//Easter egg!!!
