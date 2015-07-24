@@ -30,6 +30,7 @@ var clickBeepID = 0;  //Keeps track of which clickBeep is currently playing in a
 var clickBeepArr = [clickBeep1, clickBeep2, clickBeep3, clickBeep4, clickBeep5];  //Play sounds round-robin style to simulate 
 
 var secret = new Audio("assets/sounds/Vane_Easter_Egg.m4a");  //Used for easter egg.
+
 var buttonClick = new Audio("assets/sounds/buttonClick.wav");
 buttonClick.volume = 0.8;
 
@@ -258,7 +259,9 @@ var main = function(){
 
 	//Easter egg!!!
 	$("#shh").on("click", function(){
-		secret.play();
+		if(mute === false){
+			secret.play();
+		}
 	});
 };
 
