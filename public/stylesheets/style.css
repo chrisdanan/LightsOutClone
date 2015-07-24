@@ -4,14 +4,14 @@
 	background-color: #424242;
 }
 
-#gameArea{
-	background-color: #424242;
-	color: white;
-}
-
 #header{
 	margin-bottom: 30px;
 	background-color: black;
+	color: white;
+}
+
+#gameArea{
+	background-color: #424242;
 	color: white;
 }
 
@@ -34,11 +34,18 @@ td:hover{
 	cursor: pointer;
 }
 
-button{
-	margin: 3px;
-	border: 5px solid black;
+#restartButton, #undoButton, #muteButton{
+	height: 50px;
+	width: 100px;
+	margin: 5px;
+	border: 3px solid black;
 	background-color: cornflowerblue;
-	color: yellow;
+	color: white;
+	outline: none;
+}
+
+#restartButton:active, #undoButton:active, #muteButton:active{
+	background-color: yellow;
 }
 
 #instructions{
