@@ -214,14 +214,6 @@ var main = function(){
 
 	//Player clicked a cell on the game board.
 	$("#gameBoard td").on("click", function(cell){
-		if(mute === false){
-			clickBeepArr[clickBeepID++].play();
-			//Reset clickBeepID to 0 if it reaches end of array.
-			if(clickBeepID >= clickBeepArr.length){
-				clickBeepID = 0;
-			}
-		}
-
 		var clickedID = parseInt($(cell.target).attr("id"));  //Save id of clicked cell; used later to toggle other cells as on/off.
 		lastClicked = clickedID;
 		
@@ -253,6 +245,15 @@ var main = function(){
 					chooseLevel();
 				}
 			}, 200);
+		}else{
+			//Move clickBeep sound in here so that it doesn't play when the player wins a level.
+			if(mute === false){
+				clickBeepArr[clickBeepID++].play();
+				//Reset clickBeepID to 0 if it reaches end of array.
+				if(clickBeepID >= clickBeepArr.length){
+					clickBeepID = 0;
+				}
+			}
 		}
 	});
 	
